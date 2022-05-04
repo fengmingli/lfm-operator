@@ -14,6 +14,7 @@ import (
 	"k8s.io/klog/v2"
 	v1 "lfm-operator/api/v1"
 	"lfm-operator/controllers"
+	"lfm-operator/metrics"
 	"os"
 	"sigs.k8s.io/controller-runtime/pkg/client/config"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
@@ -69,6 +70,11 @@ func main() {
 	}
 
 	klog.Infof("Starting the Cmd.")
+
+	if err := mgr.Add(metrics.NewMetricsExporter()); err != nil {
+		klog.Errorf("unable to set up health check", err)
+		os.Exit(1)
+	}
 
 	//3。 启动一个manager
 	if err := mgr.Start(signals.SetupSignalHandler()); err != nil {
