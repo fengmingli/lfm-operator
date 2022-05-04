@@ -1,0 +1,9 @@
+apiVersion: lvm.storage.io/v1
+kind: VolumeGroup
+metadata:
+  name: hxmysql-wc-test-35
+  namespace: lvm
+spec:
+  nodeName: wc-test-35
+  vgName: hxmysql
+  size: 970G
